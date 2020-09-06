@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<config>
+    <source_groups>
+        <source_group_445b60a1-6f9d-41fd-8818-ef64048a8c45>
+            <build_file_path>
+                <compilation_db_path>compile_commands.json</compilation_db_path>
+            </build_file_path>
+            <indexed_header_paths>
+                <indexed_header_path>common</indexed_header_path>
+                <indexed_header_path>sampleAlgorithmSelector</indexed_header_path>
+                <indexed_header_path>sampleCharRNN</indexed_header_path>
+                <indexed_header_path>sampleDynamicReshape</indexed_header_path>
+                <indexed_header_path>sampleFasterRCNN</indexed_header_path>
+                <indexed_header_path>sampleGoogleNet</indexed_header_path>
+                <indexed_header_path>sampleINT8</indexed_header_path>
+                <indexed_header_path>sampleINT8API</indexed_header_path>
+                <indexed_header_path>sampleMLP</indexed_header_path>
+                <indexed_header_path>sampleMNIST</indexed_header_path>
+                <indexed_header_path>sampleMNISTAPI</indexed_header_path>
+                <indexed_header_path>sampleMovieLens</indexed_header_path>
+                <indexed_header_path>sampleMovieLensMPS</indexed_header_path>
+                <indexed_header_path>sampleNMT</indexed_header_path>
+                <indexed_header_path>sampleOnnxMNIST</indexed_header_path>
+                <indexed_header_path>samplePlugin</indexed_header_path>
+                <indexed_header_path>sampleReformatFreeIO</indexed_header_path>
+                <indexed_header_path>sampleSSD</indexed_header_path>
+                <indexed_header_path>sampleUffFasterRCNN</indexed_header_path>
+                <indexed_header_path>sampleUffMNIST</indexed_header_path>
+                <indexed_header_path>sampleUffMaskRCNN</indexed_header_path>
+                <indexed_header_path>sampleUffPluginV2Ext</indexed_header_path>
+                <indexed_header_path>sampleUffSSD</indexed_header_path>
+                <indexed_header_path>trtexec</indexed_header_path>
+            </indexed_header_paths>
+            <name>C/C++ from Compilation Database</name>
+            <pch_flags>
+                <use_compiler_flags>1</use_compiler_flags>
+            </pch_flags>
+            <status>enabled</status>
+            <type>C/C++ from Compilation Database</type>
+        </source_group_445b60a1-6f9d-41fd-8818-ef64048a8c45>
+    </source_groups>
+    <version>8</version>
+</config>
