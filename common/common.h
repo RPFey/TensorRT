@@ -49,6 +49,7 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include <opencv2/opencv.hpp>
 
 using namespace nvinfer1;
 using namespace plugin;
@@ -270,6 +271,12 @@ inline std::string locateFile(const std::string& filepathSuffix, const std::vect
         exit(EXIT_FAILURE);
     }
     return filepath;
+}
+
+void readRGBFile(const std::string& fileName, uint8_t* buffer, int inH, int inW)
+{
+    cv::Mat img = cv::imread(fileName);
+    memcpy(img.data, buffer, inH * inW * 3 * sizeof(uint8_t));
 }
 
 inline void readPGMFile(const std::string& fileName, uint8_t* buffer, int inH, int inW)

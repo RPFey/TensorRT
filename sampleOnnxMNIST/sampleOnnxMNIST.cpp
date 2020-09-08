@@ -170,7 +170,7 @@ bool SampleOnnxMNIST::constructNetwork(SampleUniquePtr<nvinfer1::IBuilder>& buil
         return false;
     }
 
-    config->setMaxWorkspaceSize(16_MiB);
+    config->setMaxWorkspaceSize(256_MiB);
     if (mParams.fp16)
     {
         config->setFlag(BuilderFlag::kFP16);
@@ -241,9 +241,9 @@ bool SampleOnnxMNIST::processInput(const samplesCommon::BufferManager& buffers)
 
     // Read a random digit file
     srand(unsigned(time(nullptr)));
-    std::vector<uint8_t> fileData(inputH * inputW);
+    std::vector<uint8_t> fileData(inputH * inputW * 3);
     mNumber = rand() % 10;
-    readPGMFile(locateFile(std::to_string(mNumber) + ".pgm", mParams.dataDirs), fileData.data(), inputH, inputW);
+    readRGBFile(locateFile(std::to_string(mNumber) + ".pgm", mParams.dataDirs), fileData.data(), inputH, inputW);
 
     // Print an ascii representation
     sample::gLogInfo << "Input:" << std::endl;
@@ -256,7 +256,9 @@ bool SampleOnnxMNIST::processInput(const samplesCommon::BufferManager& buffers)
     float* hostDataBuffer = static_cast<float*>(buffers.getHostBuffer(mParams.inputTensorNames[0]));
     for (int i = 0; i < inputH * inputW; i++)
     {
-        hostDataBuffer[i] = 1.0 - float(fileData[i] / 255.0);
+        hostDataBuffer[i] = 1.0 - float(fileData[3*i] / 255.0);
+        hostDataBuffer[i + inputH*inputW] = 1.0 - float(fileData[3*i + 1] / 255.0);
+        hostDataBuffer[i + 2*inputH*inputW] = 1.0 - float(fileData[3*i + 2] / 255.0);
     }
 
     return true;
@@ -315,9 +317,9 @@ samplesCommon::OnnxSampleParams initializeSampleParams(const samplesCommon::Args
     {
         params.dataDirs = args.dataDirs;
     }
-    params.onnxFileName = "mnist.onnx";
-    params.inputTensorNames.push_back("Input3");
-    params.outputTensorNames.push_back("Plus214_Output_0");
+    params.onnxFileName = "alexnet.onnx";
+    params.inputTensorNames.push_back("actual_input_1");
+    params.outputTensorNames.push_back("output1");
     params.dlaCore = args.useDLACore;
     params.int8 = args.runInInt8;
     params.fp16 = args.runInFp16;
