@@ -36,6 +36,7 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <ctime>
 
 const std::string gSampleName = "TensorRT.sample_onnx_mnist";
 
@@ -213,7 +214,11 @@ bool SampleOnnxMNIST::infer()
     // Memcpy from host input buffers to device input buffers
     buffers.copyInputToDevice();
 
+    clock_t startTime, endTime;
+    startTime = std::clock();
     bool status = context->executeV2(buffers.getDeviceBindings().data());
+    endTime = std::clock();//计时结束
+    std::cout << "The run time is: " <<(double)(endTime - startTime) / CLOCKS_PER_SEC << "s" << std::endl;
     if (!status)
     {
         return false;
@@ -243,7 +248,7 @@ bool SampleOnnxMNIST::processInput(const samplesCommon::BufferManager& buffers)
     srand(unsigned(time(nullptr)));
     std::vector<uint8_t> fileData(inputH * inputW * 3);
     mNumber = rand() % 10;
-    readRGBFile(locateFile(std::to_string(mNumber) + ".pgm", mParams.dataDirs), fileData.data(), inputH, inputW);
+    readRGBFile(locateFile("bee_resize.jpg", mParams.dataDirs), fileData.data(), inputH, inputW);
 
     // Print an ascii representation
     sample::gLogInfo << "Input:" << std::endl;
@@ -256,9 +261,9 @@ bool SampleOnnxMNIST::processInput(const samplesCommon::BufferManager& buffers)
     float* hostDataBuffer = static_cast<float*>(buffers.getHostBuffer(mParams.inputTensorNames[0]));
     for (int i = 0; i < inputH * inputW; i++)
     {
-        hostDataBuffer[i] = 1.0 - float(fileData[3*i] / 255.0);
-        hostDataBuffer[i + inputH*inputW] = 1.0 - float(fileData[3*i + 1] / 255.0);
-        hostDataBuffer[i + 2*inputH*inputW] = 1.0 - float(fileData[3*i + 2] / 255.0);
+        hostDataBuffer[i] = float(fileData[3*i] / 255.0);
+        hostDataBuffer[i + inputH*inputW] = float(fileData[3*i + 1] / 255.0);
+        hostDataBuffer[i + 2*inputH*inputW] = float(fileData[3*i + 2] / 255.0);
     }
 
     return true;
@@ -298,6 +303,8 @@ bool SampleOnnxMNIST::verifyOutput(const samplesCommon::BufferManager& buffers)
                  << "Class " << i << ": " << std::string(int(std::floor(output[i] * 10 + 0.5f)), '*') << std::endl;
     }
     sample::gLogInfo << std::endl;
+
+    sample::gLogInfo << " Max prob: "<<val<<" Class : "<<idx<<std::endl;
 
     return idx == mNumber && val > 0.9f;
 }
